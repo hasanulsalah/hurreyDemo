@@ -1,0 +1,91 @@
+<div class="container-whole">
+    <div [@displayState]="showHurreyLogo" class="anime_bg_div" *ngIf="showHurreyLogo">
+        <img src="assets/images/anime_bg.svg" />
+    </div>
+    <div class="absolute top-3 left-3 cursor-pointer" *ngIf="currentPageIndex !== 0 && !showHurreyLogo">
+        <span class="material-symbols-outlined text-white f-40">
+            <mat-icon (click)="reducePageNoByOne()">arrow_back</mat-icon>
+        </span>
+    </div>
+    <div class="pageone flex flex-col gap-4" *ngIf="showFormInput && currentPageIndex == 0">
+        <h1 class="text-white text-extra-large-name f-30">What is your name?</h1>
+        <form (ngSubmit)="onSubmit(hurreyLoginForm.value)" #hurreyLoginForm="ngForm"
+            class="flex flex-col gap-8 w-fit justify-center items-center">
+            <input autofocus type="text" placeholder="-Type here-" class="text-white text-medium" id="hurreyName"
+                [(ngModel)]="nameInputValue" #hurreyName="ngModel" name="name" required />
+            <button [disabled]="hurreyLoginForm.invalid" class="px-6 py-2 name_page f-20">
+                Next
+            </button>
+        </form>
+    </div>
+    <div [@bottomtoup]="currentPageIndex == 1" class="pagetwo flex flex-col gap-9" *ngIf="currentPageIndex == 1">
+        <div class="flex flex-col gap-2 item-center">
+            <h1 class="f-40 text-white fw-700 f-40">Hello {{ nameInputValue }}!</h1>
+            <p class="text-white f-20">Choose Your Avatar</p>
+        </div>
+        <div class="flex flex-col gap-8 justify-center item-center">
+            <div class="avatar-container justify-center flex items-center FLEX-WRAP gap-4">
+                <div *ngFor="let avatar of avatars">
+                    <a class="cursor-pointer">
+                        <img [@enlarge]="avatar.isSelected ? 'large' : 'normal'" [src]="avatar.url"
+                            (click)="avatarSelect(avatar)" />
+                    </a>
+                </div>
+            </div>
+            <button [disabled]="!selectedAvatarUrl" (click)="goNext()" class="px-6 py-2 name_page fw-500">
+                Next
+            </button>
+        </div>
+    </div>
+    <div [@lefttoright]="currentPageIndex == 2" class="pagethree flex flex-col gap-9 item-center" *ngIf="currentPageIndex == 2">
+        <div class="flex gap-4 item-center f-30">
+            <img [src]="selectedAvatarUrl" width="100" />
+            <p class="text-white f-30">{{ nameInputValue }}</p>
+        </div>
+        <div class="flex flex-col gap-8">
+            <button class="px-9 py-3 room_page f-100" (click)="goNext('join')">
+                Join a Room
+            </button>
+            <button class="px-9 py-3 room_page f-100" (click)="goNext('create')">
+                Create a Room
+            </button>
+        </div>
+    </div>
+    <div [@righttoleft]="currentPageIndex == 3" class="pagethree flex flex-col gap-9 item-center" *ngIf="currentPageIndex == 3">
+        <div class="flex gap-4 item-center f-30">
+            <img [src]="selectedAvatarUrl" width="100" />
+            <p class="text-white f-30">{{ nameInputValue }}</p>
+        </div>
+        <div class="flex flex-col gap-8">
+            <h1 class="text-white text-extra-large-name f-28 fw-500">
+                Type room code below
+            </h1>
+            <form #createLoginForm="ngForm" class="flex flex-col gap-8 w-fit justify-center items-center">
+                <input autofocus type="text" placeholder="-Type here-" class="text-white text-medium fw-500"
+                    id="joinInputName" (keypress)="onlyNumberKey($event)" ngModel #joinInputName="ngModel" name="name"
+                    minlength="6" maxlength="6" required />
+                <button [disabled]="createLoginForm.invalid" class="px-6 py-2 name_page fw-500">
+                    Next
+                </button>
+            </form>
+        </div>
+    </div>
+    <div [@righttoleft]="currentPageIndex == 4" class="pagethree flex flex-col gap-9 item-center" *ngIf="currentPageIndex == 4">
+        <div class="flex gap-4 item-center">
+            <img [src]="selectedAvatarUrl" width="100" />
+            <p class="text-white f-30 fw-500">{{ nameInputValue }}</p>
+        </div>
+        <div class="flex flex-col gap-8">
+            <form #createRoomLoginForm="ngForm" class="flex flex-col gap-8 w-fit justify-center items-center">
+                <input type="text" placeholder="-Room name-" class="text-white text-medium fw-500" id="createRoomName"
+                    ngModel #createRoomName="ngModel" name="createdRoomName" required />
+                <input type="text" placeholder="-No of players-" class="text-white text-medium fw-500" id="noPlayers"
+                    ngModel #noOfPlayers="ngModel" name="playersNo" required (keypress)="onlyNumberKey($event, 4)"
+                    minlength="1" maxlength="1" />
+                <button [disabled]="createRoomLoginForm.invalid" class="px-6 py-2 name_page fw-500">
+                    Create
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
